@@ -2,6 +2,7 @@ from functools import lru_cache
 from io import BytesIO
 from pathlib import Path
 from urllib.request import urlopen
+import os
 import re
 import zipfile
 
@@ -9,7 +10,8 @@ import pandas as pd
 
 
 DWD_BASE = "https://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/daily/kl/historical/"
-CACHE_DIR = Path(__file__).with_name("data").joinpath("dwd")
+DEFAULT_CACHE_DIR = Path("/tmp/wetterdashboard-dwd") if os.environ.get("VERCEL") else Path(__file__).with_name("data").joinpath("dwd")
+CACHE_DIR = Path(os.environ.get("DWD_CACHE_DIR", DEFAULT_CACHE_DIR))
 STATION_LIST_FILE = CACHE_DIR / "KL_Tageswerte_Beschreibung_Stationen.txt"
 REGIONAL_OBSERVATIONS_CACHE = CACHE_DIR / "regional_observations.pkl"
 FILLED_SERIES_CACHE = CACHE_DIR / "filled_regional_series.pkl"

@@ -1179,7 +1179,7 @@ class DashboardHandler(BaseHTTPRequestHandler):
         parsed = urlparse(self.path)
         query = parse_qs(parsed.query)
 
-        if parsed.path == "/":
+        if parsed.path in {"/", "/api/index", "/api/index.py"}:
             self._send_html(INDEX_HTML)
             return
         if parsed.path == "/api/current":

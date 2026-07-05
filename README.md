@@ -79,6 +79,30 @@ Danach im Browser oeffnen:
 http://127.0.0.1:8000/
 ```
 
+## Deployment auf Vercel
+
+Das Projekt ist fuer Vercel vorbereitet:
+
+- `api/index.py` stellt das Dashboard als Python Function bereit.
+- `vercel.json` leitet alle Routen an diese Function weiter.
+- `requirements.txt` installiert die benoetigten Python-Abhaengigkeiten.
+- `.vercelignore` verhindert, dass lokale Cache-Dateien deployed werden.
+
+Deployment:
+
+```powershell
+vercel
+```
+
+Oder fuer Production:
+
+```powershell
+vercel --prod
+```
+
+Auf Vercel wird der DWD-Cache automatisch in `/tmp/wetterdashboard-dwd`
+geschrieben. Lokal bleibt der Cache in `data/dwd/`.
+
 ## Voraussetzungen
 
 Das Dashboard ist bewusst leichtgewichtig gebaut:
