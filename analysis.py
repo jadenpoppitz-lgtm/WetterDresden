@@ -1,34 +1,30 @@
-import pandas as pd
-import numpy as np 
-
-from dataframe import read_file, year_bound, graph
+from dataframe import read_file, summarize_period, year_bound
 
 
-print('Willkommen zur Wetterdatenanalyse!')
-print(f'1 - Ausgabe einer Tabelle \n2 - Ausgabe eines Graphens')
+def main():
+    print("Willkommen zur Wetterdatenanalyse Dresden-Klotzsche")
+    begin = int(input("Jahr Beginn: "))
+    end = int(input("Jahr Ende: "))
 
-i = 1 
-while i == 1:
-    var1 = input('Eingabe: ')
-    if var1 == '1' or var1 == '2':
-        break
+    df = read_file()
+    result = summarize_period(df, begin, end)
+    yearly_temp, yearly_rain = year_bound(df, begin, end)
 
-jahr1 = 0 
-jahr2 = 0
+    print("\nKennzahlen")
+    print(f"Tage: {result['days']}")
+    print(f"Temperaturmittel: {result['temp_avg_c']:.1f} °C")
+    print(f"Temperaturmaximum: {result['temp_max_c']:.1f} °C")
+    print(f"Temperaturminimum: {result['temp_min_c']:.1f} °C")
+    print(f"Niederschlag gesamt: {result['rain_sum_mm']:.1f} mm")
+    print(f"Regentage: {result['wet_days']}")
 
-while jahr1 >= jahr2 or not (1934 <= jahr1 <= 2026) or not (1934 <= jahr2 <= 2026):    
-    jahr1 = int(input('Jahr Beginn: '))
-    jahr2 = int(input('Jahr Ende: '))
-
-df = read_file('Wetterdaten_DD_1934_2026.csv')
-temp_data, rain_data = year_bound(df, 2000, 2003)
-
-
-if var1 == '1':
-    print(df)
-elif var1 == '2':
-    graph(temp_data)
-    graph(rain_data)
-    
+    print("\nJahreswerte")
+    for year in yearly_temp.index:
+        print(
+            f"{year}: {yearly_temp.loc[year]:.1f} °C, "
+            f"{yearly_rain.loc[year]:.1f} mm Niederschlag"
+        )
 
 
+if __name__ == "__main__":
+    main()
